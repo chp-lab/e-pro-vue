@@ -8,10 +8,10 @@
         <v-row>
             <v-col cols="12">
                 <v-card
-                    class="mx-2 white--text text-center py-3"
+                    :class=mystyle
                     color="blue"
-                    outline
-                    title
+                    outlined
+                    tile
                 >
                 {{ message }}
                 </v-card>
@@ -24,10 +24,10 @@
                 cols="6"
             >
                 <v-card
-                    class="mx-2 white--text text-center py-3"
+                    :class=mystyle
                     color="yellow"
-                    outline
-                    title
+                    outlined
+                    tile
                 >
                 {{ message }}
                 </v-card>
@@ -40,10 +40,10 @@
                 cols="4"
             >
                 <v-card
-                    class="mx-2 white--text text-center py-3"
+                    :class=mystyle
                     color="red"
-                    outline
-                    title
+                    outlined
+                    tile
                 >
                 {{ message }}
                 </v-card>
@@ -56,10 +56,10 @@
                 cols="3"
             >
                 <v-card
-                    class="mx-2 white--text text-center py-3"
+                    :class=mystyle
                     color="green"
-                    outline
-                    title
+                    outlined
+                    tile
                 >
                 {{ message }}
                 </v-card>
@@ -72,10 +72,10 @@
                 cols="2"
             >
                 <v-card
-                    class="mx-2 white--text text-center py-3"
+                    :class=mystyle
                     color="pink"
-                    outline
-                    title
+                    outlined
+                    tile
                 >
                 {{ message }}
                 </v-card>
@@ -87,12 +87,9 @@
 <script>
 export default {
   data: () => ({
-    header: 'แบบทดสอบ Vue',
-    label: 'Items',
-    show: true,
-    email:'mycontact@email.com',
-    score: '0',
-    message: 'Vuetify'
+    header: "แบบทดสอบ Vue",
+    message: "Vuetify",
+    mystyle: "mx-2 white--text text-center py-3"
   }),
 };
 </script>

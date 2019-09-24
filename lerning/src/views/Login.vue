@@ -1,85 +1,105 @@
 <template>
-  <div class="login">
-    <v-container class="grey lighten-5">
-      <h1> {{header}} </h1>
-      <h2 v-if="show"> {{ label }}</h2>
-      <li v-for="(item, index) in items" :key="index">
-        {{ item.message }}
-      </li>
-      
-    </v-container>
-    <v-container class="grey lighten-5">
-      <v-row>
-        <v-col
-        cols="6"
-        xs="2"
-        sm="4"
-        md="6"
-        lg="8"
-        xl="10"
-        >
-          <v-text-field 
-            label="Email"
-            v-model="email"
-          >
-          </v-text-field>
-          <v-text-field 
-            label="Total score"
-            v-model="score"
-          >
-          </v-text-field>
-        </v-col>
-        <v-col
-          cols="6"
-          xs="2"
-          sm="4"
-          md="6"
-          lg="8"
-          xl="10"
-        >
-          <h3>Calculate</h3>
-          <v-btn color="primary" @click="display">Enter</v-btn>
-          <h3>Grade</h3>
-          <v-card
-            class="pa-2"
-            outline
-            title
-            v-model="email"
-            >
-            {{ score }}
-          </v-card>
-          
-        </v-col>
-        
-      </v-row>
-    </v-container>
-  </div>
+<div class="singup">
+    <v-form
+        ref="form1"
+        v-model="valid"
+        lazy-validation
+    >
+        <v-container class="grey lighten-5">
+            <h1 :class=mystyle> {{header}} </h1>
+            <v-row>
+                <v-col
+                    cols="6"
+                >
+                    <v-text-field
+                        v-model="email"
+                        :rules="emailRules"
+                        label="E-mail"
+                        name="email"
+                        required
+                        v-on:keypress="checkInput($event)"
+                    >
+                    </v-text-field>
+                </v-col>
+                <v-col 
+                    cols="6"
+                >
+                    <v-text-field
+                        v-model="password"
+                        :append-icon="show1 ? visibility : visibility_off"
+                        :prepend-icon="icon"
+                        :rules="[rules.required, rules.min]"
+                        :type="show1 ? 'text' : 'password'"
+                        name="password"
+                        label="Normal with hint text"
+                        hint="At least 8 characters"
+                        counter
+                        @click:append="show1 = !show1"
+                        v-on:keypress="checkInput($event)"
+                    ></v-text-field>
+                </v-col>
+            </v-row>
+            <v-row>
+                <v-col :class=mystyle2 cols="12">
+                    <v-btn :disabled="!valid" class="mr-4" @click="submit">submit</v-btn>
+                    <v-btn @click="clear">clear</v-btn>
+                </v-col>
+            </v-row>
+        </v-container>
+    </v-form>
+</div>
 </template>
 
 <script>
-export default {
-  data: () => ({
-    header: 'Login page',
-    label: 'Items',
-    show: true,
-    items: [
-      {message: 'first'},
-      {message: 'second'},
-      {message: 'third'}
-    ],
-    email:'mycontact@email.com',
-    score: '0',
-    message: 'HelloWorld!'
-  }),
-methods: {
-  display () {
-    alert('Hello World!')
-  },
-}
-};
+  export default {
+    data: () => ({
+        valid: true,
+        header: 'Inet Hatyai Login',
+        email:'',
+        password:'',
+        show1: false,
+        rules: {
+            required: value => !!value || 'Required.',
+            min: v => v.length >= 8 || 'Min 8 characters',
+            emailMatch: () => ('The email and password you entered don\'t match'),
+        },
+        emailRules: [
+            v => !!v || 'E-mail is required',
+            v => /.+@.+/.test(v) || 'E-mail must be valid',
+        ],
+        icon: 'mdi-fingerprint',
+        visibility: 'mdi-eye',
+        visibility_off: 'mdi-eye-off',
+        mystyle: "blue mx-1 white--text text-center py-3",
+        mystyle2: "mx-1 white--text text-right py-3"
+    }),
+
+    methods: {
+        async submit () {
+            var url = 'http://localhost:8081/api/v1/users/login'
+            console.log(this.email)
+            console.log(this.password)
+            try {
+                // var {data} = await this.axios.get(url)
+                var {data} = await this.axios.post(url, {"username": this.email, "password": this.password})
+                this.$swal(this.header, data.message, data.type ? 'info':'error')
+                console.log(data)
+            } catch (err){
+                console.log(err.message)
+            }
+            
+        },
+        clear () {
+            this.$refs.form1.reset()
+            this.email = ''
+            this.password = ''
+        },
+        checkInput (event) {
+            if(event.key == 'Enter')
+            {
+                this.submit()
+            }
+        }
+    },
+  }
 </script>
-<style>
-h1 {
-  background-color: lightblue;
-}
-</style>

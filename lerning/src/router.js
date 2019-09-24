@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Home from './views/Home.vue'
 
 Vue.use(Router)
 
@@ -22,14 +21,24 @@ export default new Router({
     //   component: () => import(/* webpackChunkName: "about" */ './views/About.vue')
     // },
     {
-      path: '/login',
-      name: 'login',
-      component: () => import('./views/Login.vue')
+      path: '/sis',
+      name: 'sis',
+      component: () => import('./views/Sis.vue')
     },
     {
       path: '/test',
       name: 'test',
       component: () => import('./views/Test.vue')
+    },
+    {
+      path: '/myapi',
+      name: 'myapi',
+      component: () => import('./views/Myapi.vue')
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: () => import('./views/Login.vue')
     }
   ]
 })
