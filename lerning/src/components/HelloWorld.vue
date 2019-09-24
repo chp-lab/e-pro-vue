@@ -17,6 +17,7 @@
         <h1 class="display-2 font-weight-bold mb-3">
           Welcome to Vuetify
         </h1>
+        <h2> {{my_msg}} </h2>
         <p class="subheading font-weight-regular">
           For help and collaboration with other Vuetify developers,
           <br>please join our online
@@ -137,6 +138,7 @@ export default {
         href: 'https://vuetifyjs.com/getting-started/frequently-asked-questions',
       },
     ],
+    my_msg: 'Hello'
   }),
 };
 </script>
