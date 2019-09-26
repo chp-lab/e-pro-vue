@@ -7,11 +7,10 @@
       >
         <v-card
             class="mx-auto"
-            
+            height="300"
             width="500"
-            color="teal lighten-1"
         >
-            <v-container >
+            <v-container class="grey lighten-5">
                 <v-form
                     ref="form1"
                     v-model="valid"
@@ -44,7 +43,7 @@
                                     :rules="[rules.required, rules.min]"
                                     :type="show1 ? 'text' : 'password'"
                                     name="password"
-                                    label="Password"
+                                    label="Normal with hint text"
                                     hint="At least 8 characters"
                                     counter
                                     @click:append="show1 = !show1"
@@ -54,8 +53,8 @@
                         </v-row>
                         <v-row>
                             <v-col :class=mystyle2 cols="12">
-                                <v-btn :disabled="!valid" class="mr-4" @click="submit">Login</v-btn>
-                                <v-btn @click="singup">Singup</v-btn>
+                                <v-btn :disabled="!valid" class="mr-4" @click="submit">submit</v-btn>
+                                <v-btn @click="clear">clear</v-btn>
                             </v-col>
                         </v-row>
                         <v-row
@@ -73,13 +72,9 @@
 
 <script>
   export default {
-    created () {
-        this.getData()
-        console.log(process.env.VUE_APP_API)
-    },
     data: () => ({
         valid: true,
-        header: 'Chp-Lab Login',
+        header: 'Inet Hatyai Login',
         email:'',
         password:'',
         show1: false,
@@ -95,7 +90,7 @@
         icon: 'mdi-fingerprint',
         visibility: 'mdi-eye',
         visibility_off: 'mdi-eye-off',
-        mystyle: "amber lighten-1 mx-1 white--text text-center py-3",
+        mystyle: "blue mx-1 white--text text-center py-3",
         mystyle2: "mx-1 white--text text-center py-3",
         mystyle3: "mx-1 grey--text text-right",
         credit:'Cr.Chatepth'
@@ -103,42 +98,29 @@
 
     methods: {
         async submit () {
+            var url = 'http://localhost:8081/api/v1/users/login'
             console.log(this.email)
             console.log(this.password)
             try {
                 // var {data} = await this.axios.get(url)
-                var res = await this.axios.post(process.env.VUE_APP_API + 'api/v1/users/login', {"username": this.email, "password": this.password})
-                var data = res.data
-                if(data.type)
-                {
-                    this.$router.push('/factory')
-                }
-                else
-                {
-                    this.$swal(this.header, data.message, data.type ? 'info':'error')
-                }
+                var {data} = await this.axios.post(url, {"username": this.email, "password": this.password})
+                this.$swal(this.header, data.message, data.type ? 'info':'error')
                 console.log(data)
             } catch (err){
                 console.log(err.message)
             }
             
         },
-        singup () {
-            // this.$refs.form1.reset()
-            // this.email = ''
-            // this.password = ''
-            this.$router.push('/singup')
+        clear () {
+            this.$refs.form1.reset()
+            this.email = ''
+            this.password = ''
         },
         checkInput (event) {
             if(event.key == 'Enter')
             {
                 this.submit()
             }
-        },
-        async getData () {
-            console.log("get data")
-            var {data} = await this.axios.get('http://localhost:8081/')
-            console.log(data)
         }
     },
   }

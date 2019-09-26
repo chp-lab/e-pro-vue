@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import Admin from './views/Admin.vue'
 
 Vue.use(Router)
 
@@ -39,6 +40,43 @@ export default new Router({
       path: '/login',
       name: 'login',
       component: () => import('./views/Login.vue')
+    },
+    {
+      path: '/singup',
+      name: 'singup',
+      component: () => import('./views/Singup.vue')
+    },
+    {
+      path: '/area',
+      name: 'area',
+      component: () => import('./views/Area.vue')
+    },
+    {
+      path: '/main',
+      name: 'main',
+      component: () => import('./views/Main.vue'),
+      children: [
+        {
+          path: '/factory',
+          name: 'factory',
+          component: () => import('./views/Factory.vue')
+        },
+        {
+          path: '/department',
+          name: 'department',
+          component: () => import('./views/Department.vue')
+        },
+        {
+          path: '/machine',
+          name: 'machine',
+          component: () => import('./views/Machine.vue')
+        },
+        {
+          path: '/admin',
+          name: 'admin',
+          component: () => import('./views/Admin.vue')
+        }
+      ]
     }
   ]
 })

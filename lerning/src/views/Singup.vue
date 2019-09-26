@@ -25,14 +25,10 @@
                                 cols="6"
                             >
                                 <v-text-field
-                                    v-model="email"
-                                    :rules="emailRules"
-                                    label="E-mail"
-                                    name="email"
-                                    required
-                                    v-on:keypress="checkInput($event)"
-                                >
-                                </v-text-field>
+                                    v-model="username"
+                                    name="username"
+                                    label="Username"
+                                ></v-text-field>
                             </v-col>
                             <v-col 
                                 cols="6"
@@ -52,10 +48,58 @@
                                 ></v-text-field>
                             </v-col>
                         </v-row>
+                        <v-row
+                            class="px-4"
+                        >
+                            <v-col
+                                cols="6"
+                            >
+                                <v-text-field
+                                    v-model="industry_type"
+                                    name="industry_type"
+                                    label="Industry"
+                                ></v-text-field>
+                            </v-col>
+                            <v-col
+                                cols="6"
+                            >
+                                <v-text-field
+                                    v-model="factory_name"
+                                    name="factory_name"
+                                    label="Factory"
+                                ></v-text-field>
+                            </v-col>
+                        </v-row>
+                        <v-row
+                            class="px-4"
+                        >
+                            <v-col
+                                cols="6"
+                            >
+                                <v-text-field
+                                    v-model="address"
+                                    name="address"
+                                    label="Address"
+                                ></v-text-field>
+                            </v-col>
+                            <v-col
+                                cols="6"
+                            >
+                                <v-text-field
+                                    v-model="email"
+                                    :rules="emailRules"
+                                    label="E-mail"
+                                    name="email"
+                                    required
+                                    v-on:keypress="checkInput($event)"
+                                >
+                                </v-text-field>
+                            </v-col>
+                        </v-row>
                         <v-row>
                             <v-col :class=mystyle2 cols="12">
-                                <v-btn :disabled="!valid" class="mr-4" @click="submit">Login</v-btn>
-                                <v-btn @click="singup">Singup</v-btn>
+                                <v-btn :disabled="!valid" class="mr-4" @click="submit">Singup</v-btn>
+                                <v-btn @click="goToLogin">Login?</v-btn>
                             </v-col>
                         </v-row>
                         <v-row
@@ -82,6 +126,10 @@
         header: 'Chp-Lab Login',
         email:'',
         password:'',
+        industry_type:'',
+        factory_name:'',
+        address:'',
+        username:'',
         show1: false,
         rules: {
             required: value => !!value || 'Required.',
@@ -103,12 +151,12 @@
 
     methods: {
         async submit () {
+            var url = 'http://localhost:8081/api/v1/users/login'
             console.log(this.email)
             console.log(this.password)
             try {
                 // var {data} = await this.axios.get(url)
-                var res = await this.axios.post(process.env.VUE_APP_API + 'api/v1/users/login', {"username": this.email, "password": this.password})
-                var data = res.data
+                var {data} = await this.axios.post(url, {"username": this.email, "password": this.password})
                 if(data.type)
                 {
                     this.$router.push('/factory')
@@ -123,11 +171,8 @@
             }
             
         },
-        singup () {
-            // this.$refs.form1.reset()
-            // this.email = ''
-            // this.password = ''
-            this.$router.push('/singup')
+        goToLogin () {
+            this.$router.push('/login')
         },
         checkInput (event) {
             if(event.key == 'Enter')
